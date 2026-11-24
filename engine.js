@@ -72,18 +72,19 @@
 
   // ---------- simulated vendor ledger on REAL rain ----------
   // rain: [{date, rain}] real daily rainfall. Persona: tea & snacks stall.
-  function genLedger(rain, seed) {
+  function genLedger(rain, seed, o) {
+    o = o || {}; const BASE = o.base || 1500, BUYR = o.buyR || 0.54, UPI = o.upi || 0.3;
     const R = mulberry32(seed || 7), out = [];
     for (let i = 0; i < rain.length; i++) {
       const { date, rain: mm } = rain[i], d = dow(date);
       if (R() < 0.07) continue; // missed day: real people forget
       const dayF = [1.2, 0.95, 0.95, 1.0, 1.0, 1.1, 1.25][d], growth = 1 + 0.0035 * i; // business slowly grows
-      const base = 1500 * dayF * growth * (0.9 + R() * 0.2);
+      const base = BASE * dayF * growth * (0.9 + R() * 0.2);
       const wx = mm >= 15 ? 0.2 + R() * 0.12 : mm >= 5 ? 0.72 : 1;
       const sales = Math.round(base * wx / 10) * 10;
-      const upi = Math.round(sales * (0.3 + R() * 0.1) / 10) * 10, cash = sales - upi;
+      const upi = Math.round(sales * (UPI + R() * 0.1) / 10) * 10, cash = sales - upi;
       const bf = mm >= 15 ? 0.6 + R() * 0.15 : mm >= 5 ? 0.88 : 1; // buys less when the sky looks bad, but the forecast is never perfect
-      const buy = Math.round(1500 * dayF * 0.54 * growth * (0.92 + R() * 0.16) * bf / 10) * 10;
+      const buy = Math.round(BASE * dayF * BUYR * growth * (0.92 + R() * 0.16) * bf / 10) * 10;
       const logDate = date;
       out.push({ date, type: "sale", amt: cash, src: "cash", logDate });
       out.push({ date, type: "sale", amt: upi, src: "upi", logDate });
@@ -119,13 +120,15 @@
     if (!ch.ok) flags.push({ sev: "high", name: "Ledger tampered", detail: `Entry #${ch.brokenAt} (${ch.date}) no longer matches its fingerprint` });
     const ratio = sales ? purch / sales : 0;
     const recent = days.slice(-30), rs = recent.reduce((a, d) => a + d.sales, 0), rp = recent.reduce((a, d) => a + d.purchases, 0), rRatio = rs ? rp / rs : 0;
-    if (days.length && (ratio < CATEGORY.marginBand[0] || rRatio < CATEGORY.marginBand[0])) flags.push({ sev: "high", name: "Margin too good to be true", detail: `Stock cost is only ${Math.round(Math.min(ratio, rRatio) * 100)}% of sales; tea stalls run ${CATEGORY.marginBand.map(x => Math.round(x * 100)).join("–")}%` });
+    const MB = ctx.marginBand || CATEGORY.marginBand;
+    if (days.length && (ratio < MB[0] || rRatio < MB[0])) flags.push({ sev: "high", name: "Margin too good to be true", detail: `Stock cost is only ${Math.round(Math.min(ratio, rRatio) * 100)}% of sales; stalls like this run ${MB.map(x => Math.round(x * 100)).join("–")}%` });
     const upiShare = sales ? days.reduce((a, d) => a + d.upi, 0) / sales : 0, upiRecent = rs ? recent.reduce((a, d) => a + d.upi, 0) / rs : 0;
     if (days.length > 40 && upiRecent < upiShare * 0.6) flags.push({ sev: "med", name: "Cash jumped, UPI didn't", detail: `UPI share fell from ${Math.round(upiShare * 100)}% to ${Math.round(upiRecent * 100)}% in the last 30 days` });
     const back = entries.filter(e => e.logDate && e.logDate > addDays(e.date, 2)).length / (entries.length || 1);
     if (back > 0.2) flags.push({ sev: "med", name: "Back-filled entries", detail: `${Math.round(back * 100)}% of entries were typed days after the sale` });
     let streak = 1, maxStreak = 1; for (let i = 1; i < days.length; i++) { streak = days[i].sales === days[i - 1].sales ? streak + 1 : 1; maxStreak = Math.max(maxStreak, streak); }
     if (maxStreak >= 4) flags.push({ sev: "med", name: "Copy-paste sales", detail: `${maxStreak} days in a row with identical sales` });
+    const band_ = ctx.marginBand || CATEGORY.marginBand;
     const hi = flags.some(f => f.sev === "high");
     // factors (0..1), weights sum 1
     const f = [

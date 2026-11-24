@@ -4,96 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Kamai · कमाई — a passbook for people banks ignore</title>
-<style>
-:root{--pink:#f093e6;--pink2:#e8a4d8;--yel:#f7c948;--org:#ff7a00;--ink:#1d1a14;--cream:#fdf5e0;--blue:#4aa3df;--green:#1f9d55;--red:#d6361f;--mut:#6b6354;--line:#e4d9b8;--ind:#1d1a14;--saf:#ff7a00}
-*{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:var(--yel);color:var(--ink);font:18px/1.55 "Helvetica Neue",Inter,system-ui,-apple-system,"Noto Sans Devanagari",sans-serif}
-h1,h2,h3,.big,.n{font-family:"Helvetica Neue",Inter,system-ui,"Noto Sans Devanagari",sans-serif;font-weight:800;letter-spacing:-.035em}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-nav{background:#000;color:#fff;position:sticky;top:0;z-index:20}
-nav .wrap{max-width:1200px;display:flex;justify-content:space-between;align-items:center;height:58px}
-nav b{font-size:18px}nav a{color:#fff;text-decoration:none;font-size:15px;margin-left:22px}
-nav .login{background:#fff;color:#000;border-radius:10px;padding:8px 16px;font-weight:700}
-@media(max-width:760px){nav a:not(.login){display:none}}
-.hero{background:var(--pink);position:relative;padding:46px 0 90px}
-.hero .wrap{max-width:1200px;display:grid;grid-template-columns:1.05fr 1fr;gap:10px;align-items:center}
-@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}.art{order:-1;max-width:420px;margin:0 auto}}
-.word{position:relative;line-height:.82;margin:20px 0 12px}
-.word .top{position:absolute;left:8px;top:-34px;font-size:clamp(34px,6vw,64px);color:#fff;font-weight:700;letter-spacing:-.02em}
-.word .big{display:block;font-size:clamp(88px,17vw,208px);color:#fff;letter-spacing:-.075em;font-weight:900}
-.hero h1{font-size:clamp(28px,4vw,44px);margin:10px 0 10px;line-height:1.05}
-.hero p{font-size:20px;margin:0 0 24px;max-width:520px}
-.btn{display:inline-block;background:var(--org);color:var(--ink);border:2px solid var(--ink);border-radius:12px;padding:11px 22px;font:700 16px "Helvetica Neue",Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 5px 0 var(--ink);text-decoration:none;transition:transform .08s,box-shadow .08s}
-.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
-.btn.sm{padding:8px 16px;font-size:15px}.btn.ghost{background:var(--cream)}.btn.red{background:#ff6b57}.btn.pink{background:var(--pink)}
-.wave{position:absolute;left:0;right:0;bottom:-1px;height:70px;line-height:0}.wave svg{width:100%;height:100%}
-section{padding:60px 0 6px}
-h2{font-size:clamp(30px,4.6vw,48px);line-height:1.05;margin:0 0 12px;text-align:center}
-.lead{color:#3d3624;max-width:700px;margin:0 auto 26px;text-align:center}
-.kick{display:block;text-align:center;font:800 13px/1 system-ui;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
-.card{background:var(--cream);border:2px solid var(--ink);border-bottom-width:8px;border-radius:24px;padding:20px}
-.how{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:8px}
-@media(max-width:860px){.how{grid-template-columns:1fr}}
-.how .card{padding:16px}.how .pan{background:var(--pink2);border-radius:14px;height:150px;display:grid;place-items:center;margin-bottom:14px}
-.how h3{font-size:34px;margin:0 0 6px}.how p{margin:0;color:#4a4331;font-size:15.5px}
-.intro{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center}
-@media(max-width:860px){.intro{grid-template-columns:1fr}}
-.intro h2{text-align:left}.intro p{margin:0 0 12px}
-.vs{display:grid;gap:14px}
-.vs .card small{text-transform:uppercase;letter-spacing:1.5px;font-size:12px;color:var(--mut);font-weight:700}
-.vs .n{font-size:clamp(36px,5vw,54px);line-height:1.05;margin:2px 0}
-.vs .bank .n{color:var(--red)}.vs .kam{background:#fff}.vs .kam .n{color:var(--green)}
-.err{display:none;background:#fde8e1;border:2px solid var(--red);border-radius:12px;padding:12px;margin-top:14px}
-.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.mic{width:66px;height:66px;border-radius:50%;border:2px solid var(--ink);background:var(--org);font-size:28px;cursor:pointer;flex:none;box-shadow:0 5px 0 var(--ink)}
-.mic.rec{background:var(--red);animation:p 1s infinite}@keyframes p{50%{opacity:.55}}
-input[type=text]{flex:1;min-width:200px;padding:14px;border-radius:12px;border:2px solid var(--ink);font-size:18px;font-family:inherit;background:#fff}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.chips button{border:2px solid var(--ink);background:#fff;border-radius:20px;padding:6px 14px;font-size:15px;cursor:pointer;font-family:inherit}
-.chips button:hover{background:var(--pink)}
-.ent{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border-top:2px dashed var(--line);padding:10px 0;animation:in .4s}
-@keyframes in{from{opacity:0;transform:translateY(8px)}}.ent:first-child{border:0}
-.tag{border-radius:8px;padding:3px 10px;font-size:13px;font-weight:800;color:#fff;border:2px solid var(--ink)}
-.sale{background:var(--green)}.purchase{background:var(--org);color:var(--ink)}.expense{background:#6b6354}
-.fp{font:12px ui-monospace,monospace;color:var(--mut)}.fine{font-size:14px;color:var(--mut)}.fine li{margin:5px 0}
-.score{display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:center}
-@media(max-width:700px){.score{grid-template-columns:1fr}}
-.ring{position:relative;width:180px;height:180px;margin:auto}
-.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:52px;font-weight:900;letter-spacing:-.04em}
-.ring small{position:absolute;left:0;right:0;bottom:34px;text-align:center;font-size:14px;color:var(--mut);font-weight:700}
-.fac{margin:9px 0}.fac .t{display:flex;justify-content:space-between;font-size:14px;font-weight:700}
-.fac .bar{height:12px;background:#efe3bf;border:2px solid var(--ink);border-radius:8px;overflow:hidden;margin-top:3px}
-.fac .bar i{display:block;height:100%;background:var(--pink);border-right:2px solid var(--ink);transition:width .4s}
-.fac small{color:var(--mut);font-size:13px;font-weight:400}
-.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--mut)}.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;border:1.5px solid var(--ink)}
-.paper{background:#fff;border:2px solid var(--ink);border-bottom-width:8px;border-radius:24px;padding:24px;position:relative}
-.paper h3{margin:0 0 2px;font-size:26px}
-.paper .stamp{position:absolute;right:20px;top:18px;border:3px solid var(--green);color:var(--green);padding:2px 12px;font-weight:900;letter-spacing:2px;transform:rotate(6deg);border-radius:8px;background:#fff}
-.paper .stamp.no{border-color:var(--red);color:var(--red)}
-.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
-@media(max-width:700px){.kv{grid-template-columns:1fr 1fr}}
-.kv div{background:var(--cream);border:2px solid var(--ink);border-radius:14px;padding:10px 12px}.kv b{display:block;font-size:26px;letter-spacing:-.03em}.kv span{font-size:13px;color:var(--mut)}
-.chk{display:flex;gap:8px;padding:7px 0;border-top:2px dashed var(--line);font-size:15px}.chk i{font-style:normal;flex:none}
-.cl{display:grid;grid-template-columns:92px 1fr auto;gap:12px;align-items:center;border-top:2px dashed var(--line);padding:10px 0}.cl:first-child{border:0}
-.cl .mm{background:#cfe8fb;border:2px solid var(--ink);border-radius:12px;text-align:center;padding:6px;font-weight:800;line-height:1.1}.cl .mm small{display:block;font-weight:500;font-size:11px}
-.cl .pay{font-weight:900;font-size:22px;color:var(--green);letter-spacing:-.03em}
-.pkg{background:#15131c;color:#d6ffe6;border-radius:14px;padding:16px;font:13px/1.6 ui-monospace,monospace;white-space:pre-wrap;margin-top:14px;border:2px solid var(--ink)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:800px){.two{grid-template-columns:1fr}}
-.deco{position:absolute;pointer-events:none}
-footer{margin-top:60px;background:#000;color:#cfc9b4;padding:34px 0;font-size:14px}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<nav><div class="wrap"><b>Kamai · कमाई</b><div><a href="#how">How it works</a><a href="#speak">Speak</a><a href="#score">Score</a><a href="#lender">Lender</a><a href="#rain">Rain cover</a><a class="login" href="#speak">Try it</a></div></div></nav>
-
 <header class="hero">
   <div class="wrap">
     <div>
       <div class="word"><span class="top">कमाई</span><span class="big">kamai</span></div>
       <h1>A passbook for people banks ignore....kinda.</h1>
       <p>Speak your day in Hindi. Get a score a lender can trust, a loan offer, and rain-out insurance that files itself.</p>
-      <a class="btn" href="#story">See Savitri's story</a>
-      <div class="err" id="err"></div>
+      <div class="row"><a class="btn" href="vendor.html">Open the vendor app</a><a class="btn ghost" href="#roles">See all three apps</a></div>
+      
     </div>
     <div class="art">
 <svg viewBox="0 0 520 440" width="100%" role="img" aria-label="Savitri's chai cart with a speech bubble saying aaj 1800">
@@ -126,22 +47,17 @@ footer{margin-top:60px;background:#000;color:#cfc9b4;padding:34px 0;font-size:14
   </div>
   <div class="wave"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,34 Q60,6 120,34 T240,34 T360,34 T480,34 T600,34 T720,34 T840,34 T960,34 T1080,34 T1200,34 T1320,34 T1440,34 L1440,70 L0,70 Z" fill="#f7c948"/><path d="M0,34 Q60,6 120,34 T240,34 T360,34 T480,34 T600,34 T720,34 T840,34 T960,34 T1080,34 T1200,34 T1320,34 T1440,34" fill="none" stroke="#1d1a14" stroke-width="2.5"/></svg></div>
 </header>
-
 <main>
-<section id="story"><div class="wrap">
-  <div class="intro">
-    <div>
-      <h2>The future of small-shop credit</h2>
-      <p>Savitri Devi has sold chai in Gorakhpur for 11 years. ₹1,500 a day, all in cash, all in her head.</p>
-      <p>No records means no loan, so she borrows from the local moneylender. Kamai gives her what a bank needs: a verified record she never had to fill a form for, and cover for the monsoon that empties her stall.</p>
-    </div>
-    <div class="vs">
-      <div class="card bank"><small>Bank today</small><div class="n">₹0 loan</div><div>"No income proof. No credit history. Application rejected."</div></div>
-      <div class="card kam"><small>After 90 days of speaking her day</small><div class="n" id="heroLoan">…</div><div id="heroLoanSub">Reading 90 days of real Gorakhpur rain…</div></div>
-    </div>
+<section id="roles"><div class="wrap">
+  <h2>Three apps. One verified ledger.</h2>
+  <p class="lead">Savitri's voice goes in. A lender and an insurer both read the same tamper-proof record.</p>
+  <div class="roles">
+    <div class="card"><div style="font-size:44px">🎤</div><h3>Vendor app</h3><p>Speak the day in Hindi. See your score, your loan offer and your rain cover. Apply with one tap.</p><a class="btn" href="vendor.html">Open →</a></div>
+    <div class="card"><div style="font-size:44px">🏦</div><h3>Lender dashboard</h3><p>A queue of applicants with verified records. Spot the vendor who edited their ledger. Approve with confidence.</p><a class="btn" href="lender.html">Open →</a></div>
+    <div class="card"><div style="font-size:44px">🌧️</div><h3>Insurer console</h3><p>Rain-out claims validated automatically from real rainfall plus ledger proof. Pay in one click.</p><a class="btn" href="insurer.html">Open →</a></div>
   </div>
+  <div class="stats" style="margin-top:26px"><div class="card"><b id="l1">–</b><span>vendors with a lendable record</span></div><div class="card"><b id="l2">–</b><span>of loans they qualify for</span></div><div class="card"><b id="l3">–</b><span>rain-out claims auto-validated</span></div><div class="card"><b id="l4">–</b><span>tampered ledgers caught</span></div></div>
 </div></section>
-
 <section id="how"><div class="wrap">
   <h2>How it works</h2>
   <div class="how">
@@ -150,48 +66,6 @@ footer{margin-top:60px;background:#000;color:#cfc9b4;padding:34px 0;font-size:14
     <div class="card"><div class="pan"><svg width="130" height="110" viewBox="0 0 130 110" stroke="#1d1a14" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M0 60h20M110 60h20" fill="none"/><path d="M22 60a43 43 0 0 1 86 0z" fill="#4aa3df"/><path d="M65 60v28a8 8 0 0 1-16 0" fill="none"/><path d="M65 12v6" fill="none"/></svg></div><h3>Protect</h3><p>When real rain empties her stall, her own ledger plus the rainfall record files the insurance claim. No bills. No forms.</p></div>
   </div>
 </div></section>
-
-<section id="speak"><div class="wrap">
-  <h2>Speak your day</h2>
-  <p class="lead">No app to learn. She just talks. Try it: tap a sentence, type, or use the mic (Chrome).</p>
-  <div class="card">
-    <div class="row"><button class="mic" id="mic" title="Speak">🎤</button><input type="text" id="say" placeholder="आज 1800 की बिक्री हुई और 1100 का माल लिया"><button class="btn" id="add">Record</button></div>
-    <div class="chips" id="chips"></div>
-    <div id="ents" style="margin-top:12px"></div>
-  </div>
-</div></section>
-
-<section id="score"><div class="wrap">
-  <h2>Ninety days, one score</h2>
-  <p class="lead">Her reputation grows day by day. The rain is the real Gorakhpur monsoon of 2026. Her sales are a simulated stall that sells less when it pours.</p>
-  <div class="card">
-    <div class="score">
-      <div class="ring"><svg viewBox="0 0 120 120" width="180" height="180"><circle cx="60" cy="60" r="52" fill="none" stroke="#efe3bf" stroke-width="12"/><circle id="arc" cx="60" cy="60" r="52" fill="none" stroke="#1f9d55" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 327" transform="rotate(-90 60 60)"/></svg><b id="sc">–</b><small id="band"></small></div>
-      <div id="facs"></div>
-    </div>
-    <div class="row" style="justify-content:space-between;margin:18px 0 4px"><div class="leg"><span><i style="background:#1d1a14"></i>Daily sales</span><span><i style="background:#7fb3ea"></i>Real rainfall</span><span><i style="background:#ff7a00"></i>Rain-out day</span></div><div class="row"><span class="fine" id="dayLbl"></span><button class="btn sm" id="play">▶ Replay 90 days</button></div></div>
-    <div id="chart"></div>
-  </div>
-</div></section>
-
-<section id="lender"><div class="wrap">
-  <h2>What the lender sees</h2>
-  <p class="lead">A loan officer can verify it. Savitri can't fake it. Try to cheat and watch.</p>
-  <div class="paper" id="paper"></div>
-  <div class="row" style="margin-top:20px;justify-content:center"><button class="btn red" id="cheat1">😈 Edit past entries to look richer</button><button class="btn red" id="cheat2">😈 Rewrite the whole ledger</button><button class="btn ghost" id="reset">↺ Restore honest ledger</button></div>
-</div></section>
-
-<section id="rain"><div class="wrap">
-  <h2>When the rain comes</h2>
-  <p class="lead">Barish Suraksha pays on rain-out days. The proof already exists: real rainfall at her stall and a sales drop in her own verified ledger.</p>
-  <div class="card">
-    <div class="row" style="justify-content:space-between"><div><b style="font-size:22px" id="clN">–</b> <span class="fine">rain-out days this season · premium paid ₹<span id="prem">–</span></span></div><div class="pay" style="font-size:30px;font-weight:900;color:var(--green);letter-spacing:-.03em" id="clTot">–</div></div>
-    <div id="cls" style="margin-top:8px"></div>
-    <div class="row" style="margin-top:16px"><button class="mic" id="micClaim" title="Say haan">🎤</button><button class="btn" id="claim">Say "हाँ" to file all claims</button><span class="fine">One word. The package builds itself.</span></div>
-    <div class="pkg" id="pkg" style="display:none"></div>
-  </div>
-</div></section>
-
 <section><div class="wrap">
   <h2>Honest about what's real</h2>
   <div class="two" style="margin-top:20px">
@@ -200,123 +74,16 @@ footer{margin-top:60px;background:#000;color:#cfc9b4;padding:34px 0;font-size:14
   </div>
 </div></section>
 </main>
-<footer><div class="wrap">Weather © Open-Meteo.com (CC BY 4.0). Vendor persona is fictional. Built for Build for Bharat.</div></footer>
-
 <script src="engine.js"></script>
+<script src="app.js"></script>
 <script>
-const K = Kamai, $ = s => document.querySelector(s), rs = n => "₹" + Math.round(n).toLocaleString("en-IN");
-const esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
-const START = "2026-07-01", N = 90, CTX = { totalDays: N, vouches: 3, utilityOnTime: true };
-let rain = [], honest = [], ledger = [], timer = null, live = [];
-
-const SAMPLES = ["आज 1800 की बिक्री हुई और 1100 का माल लिया", "aaj 2 hazaar ki bikri aur 800 ka doodh liya", "gas cylinder 1150", "sold 2400 and bought stock for 1300"];
-$("#chips").innerHTML = SAMPLES.map(s => `<button>${esc(s)}</button>`).join("");
-$("#chips").onclick = e => { if (e.target.tagName === "BUTTON") { $("#say").value = e.target.textContent; record(); } };
-
-function speak(t) { if (!("speechSynthesis" in window)) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "hi-IN"; speechSynthesis.speak(u); }
-const HI = { sale: "बिक्री", purchase: "माल", expense: "ख़र्च" };
-
-function record() {
-  const txt = $("#say").value.trim(); if (!txt) return;
-  const items = K.parseVoice(txt), day = K.addDays(START, N); // "day 91": the next day of the story
-  if (!items.length) { $("#ents").insertAdjacentHTML("afterbegin", `<div class="ent"><span class="tag expense">?</span><div>Couldn't find an amount in: "${esc(txt)}". Try "1800 ki bikri".</div><span></span></div>`); return; }
-  for (const it of items) { const e = K.append(ledger, { date: day, type: it.type, amt: it.amt, src: "cash", logDate: day }); live.push(e); $("#ents").insertAdjacentHTML("afterbegin", `<div class="ent"><span class="tag ${it.type}">${it.type.toUpperCase()}</span><div><b>${rs(it.amt)}</b> ${HI[it.type]} <span class="fine">· "${esc(it.text)}"</span></div><span class="fp">#${e.id} 🔒 ${e.hash.slice(0, 8)}</span></div>`); }
-  speak(items.map(i => `${i.amt} रुपये ${HI[i.type]} दर्ज किया`).join(", "));
-  $("#say").value = ""; refresh();
-}
-$("#add").onclick = record; $("#say").onkeydown = e => { if (e.key === "Enter") record(); };
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-function listen(btn, cb) { if (!SR) return alert("Voice input works in Chrome. You can type instead."); const r = new SR(); r.lang = "hi-IN"; btn.classList.add("rec"); r.onresult = e => cb(e.results[0][0].transcript); r.onend = () => btn.classList.remove("rec"); r.start(); }
-$("#mic").onclick = () => listen($("#mic"), t => { $("#say").value = t; record(); });
-
-// ---------- scoring display ----------
-let SC, SC0;
-function showScore(s, animate) {
-  const circ = 2 * Math.PI * 52, frac = (s.score - 300) / 600;
-  $("#arc").setAttribute("stroke-dasharray", `${circ * frac} ${circ}`); $("#arc").setAttribute("stroke", s.band === "Not lendable" ? "#c0392b" : s.score >= 650 ? "#1f9d55" : "#e08a00");
-  $("#sc").textContent = s.score; $("#band").textContent = s.band;
-  $("#facs").innerHTML = s.factors.map(f => `<div class="fac"><div class="t"><span>${f.label}</span><small>${f.note}</small></div><div class="bar"><i style="width:${Math.round(f.v * 100)}%"></i></div></div>`).join("");
-}
-function chart(upto, claimDates) {
-  const d = K.daily(ledger).filter(x => x.date <= K.addDays(START, N - 1)), W = 960, H = 260, L = 46, R = 8, T = 54, B = 26, n = N, X = i => L + i * (W - L - R) / (n - 1), mx = Math.max(...d.map(x => x.sales), 1) * 1.1, Y = v => H - B - v / mx * (H - B - T), bw = (W - L - R) / n * 0.72, rmax = Math.max(...rain.map(r => r.rain), 10);
-  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%">`;
-  for (let g = 0; g <= 3; g++) { const v = mx * g / 3; s += `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#eee6d4"/><text x="${L - 6}" y="${Y(v) + 4}" font-size="11" text-anchor="end" fill="#777">${Math.round(v / 100) * 100}</text>`; }
-  for (let i = 0; i < n; i++) { const day = K.addDays(START, i); if (i > upto) break; const r = rain[i]; if (r && r.rain > 0.5) s += `<rect x="${X(i) - bw / 2}" y="${T - 46}" width="${bw}" height="${r.rain / rmax * 42}" fill="#7fb3ea"/>`; const x = d.find(q => q.date === day); if (x) s += `<rect x="${X(i) - bw / 2}" y="${Y(x.sales)}" width="${bw}" height="${H - B - Y(x.sales)}" fill="${claimDates.has(day) ? "#ff7a00" : "#1d1a14"}" rx="1.5"/>`; }
-  for (let i = 0; i < n; i += 15) s += `<text x="${X(i)}" y="${H - 8}" font-size="11" fill="#777" text-anchor="middle">${new Date(K.addDays(START, i)).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</text>`;
-  return s + `</svg>`;
-}
-
-// ---------- lender paper ----------
-function paper(s, s0, tag) {
-  const L = s.loan, ok = L.amount > 0, hasFlag = s.flags.length;
-  $("#paper").innerHTML = `<div class="stamp ${ok ? "" : "no"}">${ok ? "ELIGIBLE" : "DECLINED"}</div><h3 class="serif">Credit passport · Savitri Devi</h3><div class="fine">Tea &amp; snack stall · Gorakhpur · ${s.stats.days} days of verified records ${tag || ""}</div>
-  <div class="kv"><div><b>${s.score}</b><span>Kamai score · ${s.band}</span></div><div><b>${ok ? rs(L.amount) : "₹0"}</b><span>${ok ? "loan offer, 12 months @ 18%" : "no offer"}</span></div><div><b>${ok ? rs(L.emi) : "–"}</b><span>monthly EMI (≤35% of stressed income)</span></div><div><b>${Math.round(s.stats.coverage * 100)}%</b><span>of money independently verified</span></div><div><b>${rs(s.stats.avgNet)}</b><span>avg net / day</span></div><div><b>${rs(L.stressedMonthly)}</b><span>stressed monthly income (worst 20% of weeks)</span></div></div>
-  <div class="chk"><i>${s.chain.ok ? "✅" : "❌"}</i><div><b>Ledger integrity</b> ${s.chain.ok ? `all ${s.chain.length} entries chain correctly · head <span class="fp">${s.chain.head.slice(0, 10)}</span>` : `<span style="color:var(--red)">broken at entry #${s.chain.brokenAt} (${s.chain.date})</span>`}</div></div>
-  ${s0 && s0.loan.amount !== L.amount && !s.flags.length ? `<div class="chk"><i>🌧️</i><div><b>Insured against rain-outs</b> · Barish Suraksha payouts raise her stressed income from ${rs(s0.loan.stressedMonthly)} to ${rs(L.stressedMonthly)} a month. Loan offer rises from ${rs(s0.loan.amount)} to ${rs(L.amount)}.</div></div>` : ""}
-  ${hasFlag ? s.flags.map(f => `<div class="chk"><i>${f.sev === "high" ? "❌" : "⚠️"}</i><div><b>${f.name}</b> · ${f.detail}</div></div>`).join("") : `<div class="chk"><i>✅</i><div><b>Plausibility checks</b> cost-to-sales, UPI share, copy-paste and back-fill tests all passed</div></div>`}`;
-}
-
-// ---------- claims ----------
-let CL;
-function claimsUI() {
-  $("#clN").textContent = CL.items.length; $("#prem").textContent = CL.premiumPaid; $("#clTot").textContent = rs(CL.total) + " payout";
-  $("#cls").innerHTML = CL.items.map(c => `<div class="cl"><div class="mm">${c.rain.toFixed(0)} mm<small>${new Date(c.date).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</small></div><div>Sales ${rs(c.actual)} vs usual ${rs(c.expected)} <span class="fine">(${c.basis})</span><div class="fine">${c.chainOk ? "ledger verified" : "⚠ ledger failed integrity check"}</div></div><div class="pay">${rs(c.payout)}</div></div>`).join("") || `<div class="fine">No rain-out days.</div>`;
-  return new Set(CL.items.map(c => c.date));
-}
-function fileClaims() {
-  if (!CL.items.length) return;
-  const c = CL.items[0], pk = $("#pkg"); pk.style.display = "block";
-  const ok = CL.items.every(x => x.chainOk);
-  pk.textContent = `CLAIM PACKAGE · ${K.POLICY.name} · auto-built from ledger
-Policyholder : Savitri Devi (UPI: savitri@upi)
-Claims       : ${CL.items.length} rain-out days · total payout ${rs(CL.total)}
-Trigger      : rainfall ≥ ${K.POLICY.rainTrigger} mm AND sales < 50% of usual (both proven below)
-
-Example · ${c.date}
-  Rainfall (Open-Meteo/ERA5)   ${c.rain.toFixed(1)} mm
-  Usual sales (${c.basis})     ${rs(c.expected)}
-  Actual sales                 ${rs(c.actual)}
-  Loss ${rs(c.loss)} x ${K.POLICY.payoutShare * 100}% -> payout ${rs(c.payout)}
-  Ledger proof                 entries ${c.ledgerRefs.map(r => "#" + r.id + ":" + r.hash.slice(0, 6)).join(" ")}
-
-Ledger chain integrity : ${ok ? "VERIFIED" : "FAILED - claim held for review"}
-Status : ${ok ? "PRE-VALIDATED · sent to insurer · payout to UPI within 24h (simulated)" : "HELD"}`;
-  speak(ok ? `${CL.items.length} दावे भेज दिए गए। ${CL.total} रुपये आपके खाते में आएँगे।` : "दावा रोका गया");
-}
-$("#claim").onclick = fileClaims; $("#micClaim").onclick = () => listen($("#micClaim"), t => { if (/हाँ|हां|haan|ha|yes|ok/i.test(t)) fileClaims(); });
-
-// ---------- refresh / replay ----------
-const payMap = c => Object.fromEntries(c.items.map(x => [x.date, x.payout]));
-function refresh() {
-  CL = K.claims(ledger, rain); SC0 = K.score(ledger, CTX); SC = K.score(ledger, { ...CTX, payouts: payMap(CL) });
-  showScore(SC); paper(SC, SC0);
-  const cd = claimsUI(); $("#chart").innerHTML = chart(N, cd);
-  const L = SC.loan.amount, L0 = SC0.loan.amount, bad = SC.flags.some(f => f.sev === "high");
-  $("#heroLoan").textContent = L ? rs(L) + " loan" : "Not yet";
-  $("#heroLoanSub").textContent = bad ? "Tampering detected: ledger not lendable." : L ? `Score ${SC.score} (${SC.band}). ${L0 && L0 < L ? "Would be " + rs(L0) + " without her rain cover. " : ""}Verified and tamper-proof; she never filled a form.` : "Needs more weeks of records.";
-}
-function play() {
-  clearInterval(timer); let i = 6; const cd = new Set(K.claims(honest, rain).items.map(c => c.date)), cache = {};
-  timer = setInterval(() => {
-    i += 2; if (i >= N) { i = N; clearInterval(timer); refresh(); $("#dayLbl").textContent = ""; return; }
-    const cut = K.addDays(START, i), part = honest.filter(e => e.date <= cut); const pc = K.claims(part, rain.slice(0, i + 1)); cache[i] = K.score(part, { ...CTX, totalDays: i + 1, payouts: payMap(pc) });
-    showScore(cache[i]); $("#chart").innerHTML = chart(i, cd); $("#dayLbl").textContent = `Day ${i + 1} of ${N}`;
-  }, 90);
-}
-$("#play").onclick = play;
-$("#cheat1").onclick = () => { ledger = JSON.parse(JSON.stringify(ledger)); ledger.slice(-120).forEach(e => { if (e.type === "sale" && e.src === "cash") e.amt *= 3; }); refresh(); $("#paper").scrollIntoView({ block: "center", behavior: "smooth" }); };
-$("#cheat2").onclick = () => { const l = JSON.parse(JSON.stringify(honest)); l.slice(-120).forEach(e => { if (e.type === "sale" && e.src === "cash") e.amt *= 3; }); l.forEach(e => { delete e.hash; }); ledger = K.chain(l); refresh(); $("#paper").scrollIntoView({ block: "center", behavior: "smooth" }); };
-$("#reset").onclick = () => { ledger = JSON.parse(JSON.stringify(honest)); refresh(); };
-
-// ---------- boot: real rain ----------
-(async () => {
-  try {
-    const end = K.addDays(START, N - 1);
-    const j = await (await fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=26.76&longitude=83.37&start_date=${START}&end_date=${end}&daily=precipitation_sum&timezone=Asia%2FKolkata`)).json();
-    rain = j.daily.time.map((d, i) => ({ date: d, rain: j.daily.precipitation_sum[i] || 0 }));
-    honest = K.genLedger(rain, 7); ledger = JSON.parse(JSON.stringify(honest)); refresh(); play();
-  } catch (e) { $("#err").style.display = "block"; $("#err").textContent = "Could not load real rainfall data (" + e.message + "). Check your connection and reload."; }
-})();
+document.body.insertAdjacentHTML("afterbegin", '<nav><div class="wrap"><b>Kamai · कमाई</b><div><a href="vendor.html">Vendor app</a><a href="lender.html">Lender</a><a href="insurer.html">Insurer</a></div></div></nav>');
+document.body.insertAdjacentHTML("beforeend", '<div style="text-align:center;font-size:12px;opacity:.7;padding:18px 0 26px">Weather data: Open-Meteo.com (CC BY 4.0)</div>');
+loadWorld().then(w => {
+  const v = w.vendors, ok = v.filter(x => x.sc.loan.amount && !x.sc.flags.some(f => f.sev === "high"));
+  $("#l1").textContent = ok.length + " of " + v.length; $("#l2").textContent = rs(ok.reduce((a, x) => a + x.sc.loan.amount, 0));
+  $("#l3").textContent = v.reduce((a, x) => a + x.claims.items.filter(c => c.chainOk).length, 0); $("#l4").textContent = v.filter(x => x.sc.flags.some(f => f.sev === "high")).length;
+}).catch(() => {});
 </script>
 </body>
 </html>

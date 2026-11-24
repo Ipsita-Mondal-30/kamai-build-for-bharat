@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kamai · Vendor app</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body style="background:var(--yel)">
+<div class="app" style="max-width:520px;padding-bottom:0">
+  <div class="phoneapp">
+    <div class="bar"><b id="hi">नमस्ते, Savitri 🙏</b><small id="sub">Tea &amp; snack stall · Gorakhpur</small></div>
+    <div class="page" id="pg-today">
+      <button class="bigmic" id="mic" title="बोलिए">🎤</button>
+      <p style="text-align:center;margin:0 0 12px;font-weight:700">बोलिए: "आज 1800 की बिक्री और 1100 का माल"</p>
+      <div class="row"><input type="text" id="say" placeholder="या यहाँ लिखिए…"><button class="btn sm" id="add">Save</button></div>
+      <div class="chips" id="chips"></div>
+      <h3 style="margin:22px 0 4px">Today · <span id="dayLbl"></span></h3>
+      <div class="stats" style="grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0"><div class="card"><b id="tS">₹0</b><span>sales</span></div><div class="card"><b id="tP">₹0</b><span>stock</span></div><div class="card"><b id="tN">₹0</b><span>earned</span></div></div>
+      <div id="ents"></div>
+    </div>
+    <div class="page hidden" id="pg-score">
+      <div style="text-align:center" id="ringBox"></div>
+      <div style="text-align:center;font-weight:800;font-size:20px" id="band"></div>
+      <div id="facs" style="margin-top:12px"></div>
+      <h3 style="margin:18px 0 0">Last 90 days</h3><div class="fine" style="margin-bottom:4px">Orange = rain-out day (real rainfall)</div>
+      <div id="chart"></div>
+    </div>
+    <div class="page hidden" id="pg-loan">
+      <div class="card" style="background:#fff"><small style="text-transform:uppercase;letter-spacing:1.5px;font-weight:700;color:var(--mut)">You can borrow</small><div style="font-size:54px;font-weight:900;letter-spacing:-.05em;color:var(--green);line-height:1.1" id="loanAmt">–</div><div id="loanSub" class="fine"></div></div>
+      <div class="stats" style="grid-template-columns:1fr 1fr;margin:14px 0"><div class="card"><b id="emi">–</b><span>monthly EMI</span></div><div class="card"><b id="ver">–</b><span>of your money verified</span></div></div>
+      <div id="loanNote" class="fine" style="margin-bottom:12px"></div>
+      <button class="btn" id="apply" style="width:100%">Apply with one tap</button>
+      <div id="applied" class="card hidden" style="margin-top:14px;background:#e3f8e9"><b>✅ Sent to your lender</b><div class="fine">Partner bank sees your verified record. You will hear back by SMS. (Open the <a href="lender.html">Lender dashboard</a> to see it arrive.)</div></div>
+    </div>
+    <div class="page hidden" id="pg-rain">
+      <div class="card" style="background:#fff"><small style="text-transform:uppercase;letter-spacing:1.5px;font-weight:700;color:var(--mut)">Barish Suraksha · rain cover</small><div style="font-size:44px;font-weight:900;letter-spacing:-.05em;color:var(--green);line-height:1.1" id="payTot">–</div><div class="fine" id="paySub"></div></div>
+      <div id="cls" style="margin:10px 0"></div>
+      <button class="btn" id="claim" style="width:100%">बोलिए "हाँ" · file all claims</button>
+      <div class="pkg hidden" id="pkg" style="font-size:12px"></div>
+    </div>
+    <div class="tabs"><button data-t="today" class="on"><span>🎤</span>Today</button><button data-t="score"><span>📊</span>Score</button><button data-t="loan"><span>💰</span>Loan</button><button data-t="rain"><span>🌧️</span>Rain cover</button></div>
+  </div>
+  <div class="err" id="err"></div>
+</div>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+<script>
+mountNav("vendor.html");
+let W, me; const TODAY = K.addDays(START, N); // "day 91"
+const SAMPLES = ["आज 1800 की बिक्री हुई और 1100 का माल लिया", "aaj 2 hazaar ki bikri aur 800 ka doodh liya", "gas cylinder 1150"];
+const HI = { sale: "बिक्री", purchase: "माल", expense: "ख़र्च" };
+$("#chips").innerHTML = SAMPLES.map(s => `<button>${esc(s)}</button>`).join("");
+$("#chips").onclick = e => { if (e.target.tagName === "BUTTON") { $("#say").value = e.target.textContent; record(); } };
+document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => { document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("on", x === b)); document.querySelectorAll(".page").forEach(p => p.classList.toggle("hidden", p.id !== "pg-" + b.dataset.t)); });
+
+function record() {
+  const txt = $("#say").value.trim(); if (!txt) return; const items = K.parseVoice(txt);
+  if (!items.length) { toast("रक़म नहीं मिली. जैसे: 1800 की बिक्री"); return; }
+  const saved = store.get("entries", []);
+  for (const it of items) { saved.push({ date: TODAY, type: it.type, amt: it.amt }); K.append(me.ledger, { date: TODAY, type: it.type, amt: it.amt, src: "cash", logDate: TODAY }); }
+  store.set("entries", saved); evaluate(me);
+  speak(items.map(i => `${i.amt} रुपये ${HI[i.type]} दर्ज किया`).join(", ")); $("#say").value = ""; render();
+}
+$("#add").onclick = record; $("#say").onkeydown = e => { if (e.key === "Enter") record(); };
+$("#mic").onclick = () => listen($("#mic"), t => { $("#say").value = t; record(); });
+
+function render() {
+  const s = me.sc, d = K.daily(me.ledger).find(x => x.date === TODAY) || { sales: 0, purchases: 0, expenses: 0 };
+  $("#dayLbl").textContent = fmtD(TODAY); $("#tS").textContent = rs(d.sales); $("#tP").textContent = rs(d.purchases + d.expenses); $("#tN").textContent = rs(d.sales - d.purchases - d.expenses);
+  const live = me.ledger.filter(e => e.date === TODAY).reverse();
+  $("#ents").innerHTML = live.length ? live.map(e => `<div class="ent"><span class="tag ${e.type}">${HI[e.type]}</span><div><b>${rs(e.amt)}</b></div><span class="fp">🔒 ${e.hash.slice(0, 8)}</span></div>`).join("") : `<div class="fine" style="text-align:center;padding:10px">Nothing yet today. Tap the mic.</div>`;
+  $("#ringBox").innerHTML = ring(s.score, s.band, 170); $("#band").textContent = s.band; $("#facs").innerHTML = factorsHTML(s);
+  $("#chart").innerHTML = chartSales(me.ledger, me.rain, N, new Set(me.claims.items.map(c => c.date)), 230);
+  const L = s.loan; $("#loanAmt").textContent = L.amount ? rs(L.amount) : "₹0"; $("#loanSub").textContent = L.amount ? `12 months · 18% a year · based on your weakest weeks, not your best` : "Keep logging. A few more weeks of records unlocks an offer.";
+  $("#emi").textContent = L.amount ? rs(L.emi) : "–"; $("#ver").textContent = Math.round(s.stats.coverage * 100) + "%";
+  const b0 = me.base.loan.amount; $("#loanNote").textContent = b0 < L.amount ? `🌧️ Your rain cover adds ${rs(L.amount - b0)} to this offer (it would be ${rs(b0)} without it).` : "";
+  $("#apply").disabled = !L.amount; $("#applied").classList.toggle("hidden", !store.get("applied", false));
+  const c = me.claims; $("#payTot").textContent = rs(c.total); $("#paySub").textContent = `${c.items.length} rain-out days this season · premium paid ${rs(c.premiumPaid)}`;
+  $("#cls").innerHTML = c.items.map(x => `<div class="cl"><div class="mm">${x.rain.toFixed(0)} mm<small>${fmtD(x.date)}</small></div><div style="font-size:14px">Sold ${rs(x.actual)}, usually ${rs(x.expected)}</div><div class="pay" style="font-size:18px">${rs(x.payout)}</div></div>`).join("");
+}
+$("#apply").onclick = () => { store.set("applied", true); $("#applied").classList.remove("hidden"); speak("आवेदन भेज दिया गया"); toast("Application sent to lender"); };
+$("#claim").onclick = () => {
+  const c = me.claims, x = c.items[0]; if (!x) return; const pk = $("#pkg"); pk.classList.remove("hidden");
+  pk.textContent = `CLAIM PACKAGE · Barish Suraksha\n${c.items.length} rain-out days · ${rs(c.total)}\n\nExample ${x.date}\n Rain (Open-Meteo)  ${x.rain.toFixed(1)} mm\n Usual sales        ${rs(x.expected)}\n Actual sales       ${rs(x.actual)}\n Payout             ${rs(x.payout)}\n Ledger proof       #${x.ledgerRefs.map(r => r.id + ":" + r.hash.slice(0, 6)).join(" #")}\n\nStatus: PRE-VALIDATED · sent to insurer`;
+  store.set("filed", true); speak(`${c.items.length} दावे भेज दिए गए`); toast("Claims filed. See the Insurer console.");
+};
+loadWorld().then(w => { W = w; me = w.vendors[0]; render(); }).catch(e => { $("#err").style.display = "block"; $("#err").textContent = "Could not load real rainfall: " + e.message; });
+</script>
+</body>
+</html>

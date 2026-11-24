@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kamai · Lender dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body style="background:var(--yel)">
+<div class="app">
+  <h1>Lender dashboard</h1>
+  <div class="fine" style="color:#3d3624">Micro-loan applications from cash vendors. Every record is verified: chain integrity, UPI &amp; receipt cross-checks, fraud tests.</div>
+  <div class="stats">
+    <div class="card"><b id="s1">–</b><span>applications</span></div>
+    <div class="card"><b id="s2">–</b><span>eligible, verified</span></div>
+    <div class="card"><b id="s3">–</b><span>flagged for fraud or tampering</span></div>
+    <div class="card"><b id="s4">₹0</b><span>approved today</span></div>
+  </div>
+  <div class="split">
+    <div class="card"><table><thead><tr><th>Applicant</th><th>Score</th><th>Offer</th><th>Verified</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <div class="paper" id="detail" style="position:sticky;top:76px"><div class="fine">Select an applicant.</div></div>
+  </div>
+  <div class="err" id="err"></div>
+</div>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+<script>
+mountNav("lender.html");
+let W, sel = 0, decisions = {};
+const flagged = v => v.sc.flags.some(f => f.sev === "high");
+const status = v => decisions[v.id] || (flagged(v) ? "Flagged" : v.sc.loan.amount ? "Eligible" : "Needs more data");
+const pillCls = s => ({ Approved: "p-ok", Eligible: "p-ok", Declined: "p-grey", Flagged: "p-bad", "Needs more data": "p-warn" }[s]);
+const scCls = v => flagged(v) ? "r" : v.sc.score >= 650 ? "g" : "y";
+
+function order() { const applied = store.get("applied", false); return [...W.vendors].sort((a, b) => ((applied && b.id === "savitri") - (applied && a.id === "savitri")) || b.sc.score - a.sc.score); }
+function render() {
+  const list = order(), applied = store.get("applied", false);
+  $("#s1").textContent = list.length; $("#s2").textContent = list.filter(v => status(v) === "Eligible" || status(v) === "Approved").length; $("#s3").textContent = list.filter(flagged).length;
+  $("#s4").textContent = rs(list.filter(v => decisions[v.id] === "Approved").reduce((a, v) => a + v.sc.loan.amount, 0));
+  $("#rows").innerHTML = list.map((v, i) => `<tr data-i="${i}" class="${i === sel ? "sel" : ""}"><td><b>${v.name}</b> ${v.id === "savitri" && applied ? '<span class="pill p-new">NEW</span>' : ""}<div class="fine">${v.biz} · ${v.city}</div></td><td><span class="sc ${scCls(v)}">${v.sc.score}</span></td><td><b>${v.sc.loan.amount ? rs(v.sc.loan.amount) : "–"}</b></td><td>${Math.round(v.sc.stats.coverage * 100)}%</td><td><span class="pill ${pillCls(status(v))}">${status(v)}</span></td></tr>`).join("");
+  $("#rows").onclick = e => { const tr = e.target.closest("tr"); if (tr) { sel = +tr.dataset.i; render(); } };
+  detail(list[sel]);
+}
+function detail(v) {
+  const s = v.sc, L = s.loan, st = status(v), bad = flagged(v), led = v.ledger.slice(-6).reverse();
+  $("#detail").innerHTML = `<div class="stamp ${L.amount && !bad ? "" : "no"}" style="position:absolute;right:18px;top:16px;border:3px solid ${L.amount && !bad ? "var(--green)" : "var(--red)"};color:${L.amount && !bad ? "var(--green)" : "var(--red)"};padding:2px 10px;font-weight:900;letter-spacing:2px;transform:rotate(6deg);border-radius:8px;background:#fff;font-size:14px">${bad ? "DO NOT LEND" : L.amount ? "ELIGIBLE" : "NOT YET"}</div>
+  <h3 style="font-size:24px">${v.name}</h3><div class="fine">${v.biz} · ${v.city} · ${s.stats.days} days of records</div>
+  <div class="kv"><div><b>${s.score}</b><span>Kamai score · ${s.band}</span></div><div><b>${L.amount ? rs(L.amount) : "₹0"}</b><span>loan offer · 12 mo @ 18%</span></div><div><b>${L.amount ? rs(L.emi) : "–"}</b><span>EMI (≤35% stressed income)</span></div></div>
+  <div class="chk"><i>${s.chain.ok ? "✅" : "❌"}</i><div><b>Ledger integrity</b> ${s.chain.ok ? `all ${s.chain.length} entries chain · head <span class="fp">${s.chain.head.slice(0, 10)}</span>` : `<span style="color:var(--red)">broken at entry #${s.chain.brokenAt} (${s.chain.date})</span>`}</div></div>
+  ${s.flags.filter(f => f.name !== "Ledger tampered").map(f => `<div class="chk"><i>${f.sev === "high" ? "❌" : "⚠️"}</i><div><b>${f.name}</b> · ${f.detail}</div></div>`).join("") || (bad ? "" : '<div class="chk"><i>✅</i><div><b>Plausibility checks</b> cost-to-sales, UPI share, copy-paste, back-fill all passed</div></div>')}
+  ${v.base.loan.amount !== L.amount && !bad ? `<div class="chk"><i>🌧️</i><div><b>Insured against rain-outs</b> · offer ${rs(v.base.loan.amount)} → ${rs(L.amount)} because payouts lift her weakest weeks</div></div>` : ""}
+  <div style="margin-top:12px">${factorsHTML(s)}</div>
+  <details style="margin-top:10px"><summary class="fine" style="cursor:pointer">Latest ledger entries</summary>${led.map(e => `<div class="ent" style="grid-template-columns:auto 1fr auto"><span class="tag ${e.type}">${e.type}</span><div>${fmtD(e.date)} · ${rs(e.amt)} <span class="fine">${e.src}</span></div><span class="fp">#${e.id} ${e.hash.slice(0, 8)}</span></div>`).join("")}</details>
+  <div class="row2" style="margin-top:16px"><button class="btn sm" id="ok" ${!L.amount || bad || decisions[v.id] ? "disabled" : ""}>Approve ${L.amount ? rs(L.amount) : ""}</button><button class="btn sm ghost" id="no" ${decisions[v.id] ? "disabled" : ""}>Decline</button><button class="btn sm pink" id="ver">Re-verify ledger</button></div>`;
+  $("#ok").onclick = () => { decisions[v.id] = "Approved"; toast(`Approved ${rs(L.amount)} for ${v.name}. Disbursal to UPI.`); render(); };
+  $("#no").onclick = () => { decisions[v.id] = "Declined"; render(); };
+  $("#ver").onclick = () => { const r = K.verifyChain(v.ledger); toast(r.ok ? `Verified: all ${r.length} entries intact` : `FAILED at entry #${r.brokenAt} (${fmtD(r.date)})`); };
+}
+loadWorld().then(w => { W = w; render(); }).catch(e => { $("#err").style.display = "block"; $("#err").textContent = "Could not load real rainfall: " + e.message; });
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kamai · Insurer console</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body style="background:var(--yel)">
+<div class="app">
+  <h1>Insurer console · Barish Suraksha</h1>
+  <div class="fine" style="color:#3d3624">Parametric rain-out cover for street vendors. A claim is valid only when real rainfall at the vendor's location AND a sales drop in a verified ledger both hold.</div>
+  <div class="stats">
+    <div class="card"><b id="s1">–</b><span>rain-out claims, auto-validated</span></div>
+    <div class="card"><b id="s2">–</b><span>payout due</span></div>
+    <div class="card"><b id="s3">–</b><span>held: ledger failed integrity</span></div>
+    <div class="card"><b id="s4">–</b><span>break-even premium / vendor / month</span></div>
+  </div>
+  <div class="split">
+    <div class="card"><div class="row" style="justify-content:space-between;margin-bottom:6px"><b style="font-size:20px">Claims queue</b><button class="btn sm" id="payAll">Approve &amp; pay all validated</button></div>
+      <table><thead><tr><th>Date</th><th>Vendor</th><th>Rain</th><th>Sales vs usual</th><th>Payout</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table>
+      <div class="row" style="justify-content:center;margin-top:10px"><button class="btn sm ghost" id="more">Show more</button></div></div>
+    <div>
+      <div class="card"><b style="font-size:20px">Payout by city</b><div id="bars" style="margin-top:10px"></div></div>
+      <div class="card" style="margin-top:16px"><b style="font-size:20px">Why no assessor?</b><ul class="fine"><li>Rainfall is read from a public weather record at the vendor's coordinates, not self-reported.</li><li>Sales loss comes from a hash-chained ledger. If the chain is broken the claim is held, not paid.</li><li>Payout = 70% of the sales shortfall, max ₹800/day, 4 days/month.</li><li><b>Honest note:</b> this is the monsoon quarter, the worst three months. The break-even premium above is far more than a vendor can pay, so a pilot would fund the cover through the loan (the lender benefits from lower defaults) or a subsidy, and average it over dry months too.</li></ul><div class="stats" style="grid-template-columns:1fr 1fr;margin:0"><div class="card"><b id="lr">–</b><span>payouts vs ₹20/mo premium</span></div><div class="card"><b id="ct">–</b><span>vendors covered</span></div></div></div>
+    </div>
+  </div>
+  <div class="err" id="err"></div>
+</div>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+<script>
+mountNav("insurer.html");
+let W, rows = [], paid = false, shown = 12;
+function build() {
+  rows = [];
+  for (const v of W.vendors) for (const c of v.claims.items) rows.push({ ...c, vendor: v.name, city: v.city, biz: v.biz, held: !c.chainOk });
+  rows.sort((a, b) => a.date < b.date ? 1 : -1);
+}
+function render() {
+  const ok = rows.filter(r => !r.held), held = rows.filter(r => r.held), due = ok.reduce((a, r) => a + r.payout, 0);
+  const prem = W.vendors.reduce((a, v) => a + v.claims.premiumPaid, 0), be = due / W.vendors.length / 3;
+  $("#s1").textContent = ok.length; $("#s2").textContent = rs(due); $("#s3").textContent = held.length; $("#s4").textContent = rs(be);
+  $("#lr").textContent = prem ? Math.round(due / prem) + "x" : "–"; $("#ct").textContent = W.vendors.length;
+  $("#rows").innerHTML = rows.slice(0, shown).map(r => `<tr><td>${fmtD(r.date)}</td><td><b>${r.vendor}</b><div class="fine">${r.city}</div></td><td><span class="pill" style="background:#cfe8fb">${r.rain.toFixed(0)} mm</span></td><td>${rs(r.actual)} <span class="fine">vs ${rs(r.expected)}</span></td><td><b>${rs(r.payout)}</b></td><td><span class="pill ${r.held ? "p-bad" : paid ? "p-ok" : "p-warn"}">${r.held ? "Held" : paid ? "Paid" : "Validated"}</span></td></tr>`).join("");
+  $("#more").style.display = shown >= rows.length ? "none" : "";
+  const byCity = {}; for (const r of ok) byCity[r.city] = (byCity[r.city] || 0) + r.payout; const mx = Math.max(...Object.values(byCity), 1);
+  $("#bars").innerHTML = Object.entries(byCity).sort((a, b) => b[1] - a[1]).map(([c, v]) => `<div style="display:grid;grid-template-columns:96px 1fr 64px;gap:8px;align-items:center;margin:6px 0;font-size:14px"><span>${c}</span><div style="background:#efe3bf;border:2px solid var(--ink);border-radius:8px;height:16px;overflow:hidden"><i style="display:block;height:100%;width:${v / mx * 100}%;background:var(--org)"></i></div><b>${rs(v)}</b></div>`).join("");
+  $("#payAll").disabled = paid;
+}
+$("#payAll").onclick = () => { paid = true; const n = rows.filter(r => !r.held).length, t = rows.filter(r => !r.held).reduce((a, r) => a + r.payout, 0); toast(`Paid ${n} claims · ${rs(t)} to vendors' UPI (simulated). Held claims stay for review.`); render(); };
+$("#more").onclick = () => { shown += 15; render(); };
+loadWorld().then(w => { W = w; build(); render(); }).catch(e => { $("#err").style.display = "block"; $("#err").textContent = "Could not load real rainfall: " + e.message; });
+</script>
+</body>
+</html>
