@@ -1,5 +1,5 @@
-const assert = require("assert");
-const K = require("./engine.js");
+import assert from "node:assert";
+import * as K from "./lib/engine.ts";
 
 // --- voice parser ---
 const p = t => K.parseVoice(t).map(x => x.type + ":" + x.amt).join(",");

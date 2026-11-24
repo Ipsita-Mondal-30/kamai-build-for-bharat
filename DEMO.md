@@ -1,6 +1,6 @@
 # Kamai demo script (about 2 minutes)
 
-**Setup:** `python3 -m http.server 8030` in this folder, open http://localhost:8030 in Chrome (internet on: real rainfall loads live). Keep three tabs ready: `vendor.html`, `lender.html`, `insurer.html`.
+**Setup:** `npm install && npm run dev` in this folder, open http://localhost:3000 in Chrome (internet on: real rainfall loads live). On `/join` use the **Sample vendor / lender / insurer** buttons (one tab each), or sign up live as a new vendor to show a real first day.
 
 **One line:** "Savitri sells ₹1,500 of chai a day and the bank says she doesn't exist. Kamai turns her voice into a record that a lender and an insurer can both trust."
 
@@ -12,7 +12,7 @@
 | 0:50 | Vendor → Loan tab | Tap **Apply with one tap** | "She sees a ₹33,000 offer, sized on her weakest weeks. Without rain cover it would be ₹17,000. One tap applies." |
 | 1:05 | **Lender** | Savitri is at the top marked NEW. Click her, then click **Imran Ali** and **Raju Sahani** | "The loan officer sees her application, verified. Now two others: Imran inflated his sales and re-signed the ledger, caught by the cost-to-sales check. Raju edited past entries, the chain breaks at the edited entry." Press **Approve** on Savitri. |
 | 1:35 | **Insurer** | Show queue, then **Approve & pay all validated** | "68 rain-out claims across 8 cities, validated from real rainfall plus ledger proof. No assessor. Claims from the tampered ledger are held, not paid." |
-| 1:55 | Insurer note | Point at break-even premium | "We are honest about cost: this is the worst quarter and covering it costs about ₹2,200 per vendor per month. A pilot funds it through the loan or a subsidy." |
+| 1:55 | Insurer note | Point at break-even premium | "We are honest about cost: this is the worst quarter and covering it costs about ₹2,000 per vendor per month. A pilot funds it through the loan or a subsidy." |
 
 ## Judging criteria
 - **Problem understanding:** the gap is *evidence*, not willingness to repay. Banks can't verify cash, insurers can't see losses.

@@ -108,3 +108,16 @@ tr.sel{background:#fff3c4}tbody tr{cursor:pointer}tbody tr:hover{background:#fff
 .hidden{display:none}
 .bigmic{width:112px;height:112px;border-radius:50%;border:3px solid var(--ink);background:var(--org);font-size:48px;cursor:pointer;box-shadow:0 7px 0 var(--ink);display:block;margin:10px auto}
 .bigmic.rec{background:var(--red);animation:p 1s infinite}
+
+/* forms */
+.lab{display:block;font-weight:700;font-size:14px;margin:12px 0 4px}
+.inp{width:100%;padding:13px 14px;border-radius:12px;border:2px solid var(--ink);font-size:18px;font-family:inherit;background:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:0 2px 0 var(--ink)}
+.prog{height:14px;background:#efe3bf;border:2px solid var(--ink);border-radius:9px;overflow:hidden;margin:8px 0}.prog i{display:block;height:100%;background:var(--org)}
+
+/* accessibility */
+:focus-visible{outline:3px solid #0050d8;outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;color:#000;padding:10px 16px;border-radius:8px;z-index:100;font-weight:700}
+.skip:focus{left:8px}
+.tabs button{min-height:56px}.chips button{min-height:40px}.btn{min-height:44px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
