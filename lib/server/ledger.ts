@@ -1,7 +1,7 @@
 import * as K from "../engine.ts";
 import { BIZ } from "../catalog";
 import { db, tx } from "./db";
-import { getRain, todayIST } from "./rain";
+import { getRain, userToday } from "./rain";
 import type { User } from "./auth";
 
 const toEntry = (r: any) => ({ id: r.seq, date: r.date, type: r.type, amt: r.amt, src: r.src, logDate: r.log_date, prev: r.prev, hash: r.hash });
@@ -11,14 +11,14 @@ export function getEntries(userId: number) {
 }
 
 // Server-side append: the chain is built here, so a vendor cannot edit or reorder history from the browser.
-export function addEntries(userId: number, items: { type: string; amt: number }[], date: string) {
+export function addEntries(userId: number, items: { type: string; amt: number }[], date: string, logDate: string) {
   return tx(() => {
     const d = db(), last = d.prepare("SELECT seq, hash FROM entries WHERE user_id = ? ORDER BY seq DESC LIMIT 1").get(userId) as any;
     let seq = last ? last.seq : 0, prev = last ? last.hash : "GENESIS";
     const ins = d.prepare("INSERT INTO entries (user_id, seq, date, type, amt, src, log_date, prev, hash) VALUES (?,?,?,?,?,?,?,?,?)"), added: any[] = [];
     for (const it of items) {
       seq++;
-      const e: any = { id: seq, date, type: it.type, amt: it.amt, src: "cash", logDate: todayIST(), prev };
+      const e: any = { id: seq, date, type: it.type, amt: it.amt, src: "cash", logDate, prev };
       e.hash = K.entryHash(e); prev = e.hash;
       ins.run(userId, seq, e.date, e.type, e.amt, e.src, e.logDate, e.prev, e.hash); added.push(e);
     }
@@ -33,8 +33,7 @@ export const MIN_DAYS = 14; // days of records before a loan offer is shown
 export async function evaluateUser(u: Pick<User, "id" | "city" | "biz" | "demo" | "vouches" | "util">) {
   const all = getEntries(u.id), chain = K.verifyChain(all);
   const empty = !all.length;
-  const lastDate = empty ? todayIST() : all[all.length - 1].date;
-  const end = u.demo ? lastDate : todayIST();
+  const end = userToday(u);
   const first = empty ? end : all[0].date, start = first > K.addDays(end, -89) ? first : K.addDays(end, -89);
   const rain = await getRain(u.city || "Delhi", start, end);
   const win = all.filter(e => e.date >= start && e.date <= end);

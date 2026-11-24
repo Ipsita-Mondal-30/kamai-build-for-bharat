@@ -1,6 +1,6 @@
 import { db } from "@/lib/server/db";
 import { evaluateUser, MIN_DAYS } from "@/lib/server/ledger";
-import { todayIST } from "@/lib/server/rain";
+import { userToday } from "@/lib/server/rain";
 import { json, requireRole } from "@/lib/server/http";
 import { BIZ } from "@/lib/catalog";
 
@@ -9,7 +9,7 @@ export async function GET() {
   const u = a.user, ev = await evaluateUser(u), d = db();
   const app = d.prepare("SELECT id, amount, status, created_at FROM applications WHERE user_id = ? ORDER BY id DESC LIMIT 1").get(u.id) as any;
   const filed = (d.prepare("SELECT date FROM claims WHERE user_id = ?").all(u.id) as any[]).map(r => r.date);
-  const today = todayIST(), s = ev.sc;
+  const today = userToday(u), s = ev.sc;
   return json({
     user: { name: u.name, city: u.city, biz: BIZ[u.biz || "other"]?.label, demo: !!u.demo },
     today, minDays: MIN_DAYS, ready: ev.ready, daysLogged: ev.daysLogged,

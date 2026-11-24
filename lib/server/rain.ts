@@ -4,6 +4,10 @@ import { addDays } from "../engine.ts";
 import { db } from "./db";
 
 export const todayIST = () => new Date(Date.now() + 5.5 * 36e5).toISOString().slice(0, 10);
+// Sample accounts live in the Jul-Sep 2026 sample timeline: their "today" is the day after it ends,
+// so a new entry continues the story instead of landing months later and emptying the 90-day window.
+export const SAMPLE_TODAY = "2026-09-29";
+export const userToday = (u: { demo: number }) => (u.demo ? SAMPLE_TODAY : todayIST());
 const daysBetween = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
 
 async function fetchRange(lat: number, lon: number, s: string, e: string): Promise<{ date: string; mm: number }[]> {

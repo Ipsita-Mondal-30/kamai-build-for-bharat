@@ -117,7 +117,7 @@ export default function VendorApp() {
             <p className="fine" style={{ marginTop: 8 }}>{t("shareNote")}</p>
             {app && <div className="card" style={{ marginTop: 14, background: app.status === "approved" ? "#e3f8e9" : app.status === "declined" ? "#fde8e1" : "#fff8dc" }}>
               <b>{app.status === "approved" ? t("approved") : app.status === "declined" ? t("declined") : t("withLender")}: {rs(app.amount)}</b>
-              <div className="fine">{app.status === "pending" ? <>Sent {fmtD(app.created_at.slice(0, 10))}. (Sample lender: open the <Link href="/join">sample lender</Link> to decide.)</> : t("decisionDone")}</div>
+              <div className="fine">{app.status === "pending" ? <>{t("sentOn", { d: fmtD(S.today) })}{S.user.demo && <> <Link href="/join">{t("openSampleLender")}</Link></>}</> : t("decisionDone")}</div>
             </div>}
           </div>
         )}

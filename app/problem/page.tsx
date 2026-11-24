@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { rs } from "@/lib/catalog";
+import { COLS, COMPARE_NOTE, FEATURES, ROWS } from "@/lib/compare";
 
 // Standard EMI: principal P, monthly rate r, n months.
 const emi = (P: number, r: number, n: number) => (r === 0 ? P / n : (P * r) / (1 - Math.pow(1 + r, -n)));
@@ -12,14 +13,17 @@ const SRC = {
   msme: "https://www.entrepreneur.com/en-in/news-and-trends/indias-inr-80-lakh-crore-credit-problem-for-msmes/491098",
   policy: "https://PRSINDIA.org/files/bills_acts/bills_parliament/2005/bill82_2006123082_National_Policy_for_Urban_Street_Vendors.pdf",
   ifc: "https://www.ifc.org/en/insights-reports/2019/financing-indias-msmes-estimation-of-debt-requirement-of-msmes-in-india",
+  okcredit: "https://yourstory.com/smbstory/free-business-accounting-app-india-okcredit-msme",
+  sewa: "https://www.sewafederation.org/wp-content/uploads/2025/12/Parametric-Insurance-report.pdf",
+  basis: "https://economics.mit.edu/sites/default/files/2022-09/Microinsurance%20%20-%20A%20Case%20Study%20of%20the%20Indian%20Rainfall%20Index%20Insurance%20Market%20-%20WP_0.pdf",
 };
 
 const GAPS: [string, string, string][] = [
   ["Bank loan", "Wants income proof, bank statements, a credit history. A cash vendor has none, so the answer is no.", "A record built from her own voice that a lender can verify."],
   ["PM SVANidhi", "A small first loan for vendors the municipality recognises, with a flat amount that does not depend on how the business actually performs. No cover when the rains empty the stall.", "Grows with a verified record, and adds rain-out cover. Complements SVANidhi: a record can support the next, larger tranche."],
-  ["Digital ledger apps", "Record sales, but entries are typically editable by the user, so a lender cannot tell a real record from an invented one.", "Every entry is hash-chained on the server; edits are detectable; fraud checks flag inflated books."],
+  ["Digital ledger apps", "Good at recording sales and dues, with voice notes and regional languages already on offer [5]. But they are built for the merchant's own use, not as evidence a lender can verify (our reading).", "Same ease of entry, plus a server-side hash chain, so edits are detectable, and fraud checks that flag inflated books."],
   ["Local moneylender", "Always available, no paperwork, but expensive and open-ended.", "A formal, priced loan the vendor qualifies for through her own record."],
-  ["Crop / weather insurance", "Built for farms, with assessors and forms. Nothing sized for a stall that loses a day's sales to rain.", "Parametric: real rainfall + a verified sales drop pays out automatically. No assessor, no bills."],
+  ["Weather-index cover", "Parametric cover for informal workers is being piloted, for example SEWA's rain and heat cover [6]. It pays on the weather index alone, so the payout may not match what a given vendor actually lost: the 'basis risk' known from rainfall-index insurance [7].", "Pays on real rainfall AND a sales drop in the vendor's own verified ledger, which narrows that gap, and the payouts also raise what she can borrow."],
 ];
 
 export default function Problem() {
@@ -54,6 +58,23 @@ export default function Problem() {
         <p className="fine">The comparison with ledger apps and moneylenders is our own analysis, not a measured study.</p>
       </div>
 
+      <h2 style={{ marginTop: 40 }}>Pieces exist. The combination is what we add.</h2>
+      <p className="lead" style={{ margin: "0 auto 14px" }}>Voice entry, rain-linked payouts and small loans each exist today. We found no single product that ties a lender-verifiable record, claims that follow the vendor&apos;s own verified loss, and cover that raises her loan.</p>
+      <div className="card" style={{ overflowX: "auto" }}>
+        <table style={{ minWidth: 760 }}>
+          <thead><tr><th></th>{COLS.map((c, i) => <th key={c} style={{ textAlign: "center", ...(i === COLS.length - 1 ? { background: "var(--pink)", borderRadius: "10px 10px 0 0" } : {}) }}>{c}</th>)}</tr></thead>
+          <tbody>{ROWS.map(([label, vals]) => (
+            <tr key={label} style={{ cursor: "default" }}><td><b>{label}</b></td>{vals.map((v, i) => <td key={i} style={{ textAlign: "center", fontSize: 22, fontWeight: 900, background: i === vals.length - 1 ? "#fff0fb" : undefined, color: v === "y" ? "#1f7a3c" : v === "p" ? "#b8650a" : "#b9ae94" }} aria-label={v === "y" ? "yes" : v === "p" ? "partly" : "not found"}>{v === "y" ? "✓" : v === "p" ? "◐" : "✕"}</td>)}</tr>
+          ))}</tbody>
+        </table>
+        <p className="fine">✓ yes · ◐ partly · ✕ not found. {COMPARE_NOTE}</p>
+      </div>
+
+      <h2 style={{ marginTop: 40 }}>What makes Kamai powerful</h2>
+      <div className="stats" style={{ gridTemplateColumns: "repeat(3,1fr)" }}>
+        {FEATURES.map(([e, t, d]) => <div className="card" key={t} style={{ padding: 18 }}><div style={{ fontSize: 34 }}>{e}</div><b style={{ fontSize: 21, letterSpacing: "-.02em", display: "block", marginTop: 6, lineHeight: 1.15 }}>{t}</b><span style={{ display: "block", marginTop: 8 }}>{d}</span></div>)}
+      </div>
+
       <h2 style={{ marginTop: 40 }}>What the value looks like</h2>
       <p className="lead" style={{ margin: "0 auto 14px" }}>A formal loan at the demo rate (18% a year) against an informal one. Move the sliders. The moneylender rate is an <b>illustrative assumption</b>, not a sourced figure: set it to what vendors you know actually pay.</p>
       <div className="card">
@@ -86,6 +107,9 @@ export default function Problem() {
         <li><a href={SRC.msme}>Entrepreneur India coverage</a> of formal credit coverage for MSMEs (secondary source; verify against NITI Aayog / IFC originals, e.g. the <a href={SRC.ifc}>IFC 2019 report</a>).</li>
         <li><a href={SRC.svanidhi}>Parliamentary reply (Lok Sabha) on PM SVANidhi</a>, figures as on 19 Nov 2025.</li>
         <li><a href={SRC.svaExt}>Business Today</a>: Cabinet extends PM SVANidhi to 2030.</li>
+        <li><a href={SRC.okcredit}>YourStory on OkCredit</a>: digital ledger with voice notes and regional languages (press coverage).</li>
+        <li><a href={SRC.sewa}>SEWA parametric insurance report</a>: rain and heat cover pilots for informal workers.</li>
+        <li><a href={SRC.basis}>Rainfall-index insurance case study (MIT / World Bank working paper)</a>: basis risk in index insurance, mainly studied for farmers.</li>
       </ol>
     </div>
   );

@@ -1,0 +1,217 @@
+1
+00:00:00,500 --> 00:00:07,812
+This is Savitri. She sells tea in Gorakhpur. Every morning, before the city wakes, she lights her stove.
+
+2
+00:00:09,012 --> 00:00:14,661
+By night, she has earned about ₹1,500. All cash. None of it written down.
+
+3
+00:00:14,661 --> 00:00:18,994
+Eleven years, and this is how she has raised her family.
+
+4
+00:00:20,194 --> 00:00:26,241
+Last monsoon, the rains came and did not stop. For days, almost nobody stopped for tea.
+
+5
+00:00:26,241 --> 00:00:31,316
+The stock she had bought was wasted. The supplier still wanted his money.
+
+6
+00:00:32,516 --> 00:00:37,392
+She went to the bank. They asked for proof of income. She had none.
+
+7
+00:00:37,392 --> 00:00:42,123
+No statements, no history, nothing in writing. The answer was no.
+
+8
+00:00:42,123 --> 00:00:46,199
+So, like millions, she borrowed from whoever would lend.
+
+9
+00:00:47,399 --> 00:00:52,286
+Savitri is not alone. India has an estimated one crore street vendors.
+
+10
+00:00:52,286 --> 00:00:57,312
+By one estimate, three in four small businesses rely on informal credit.
+
+11
+00:00:57,312 --> 00:01:01,081
+PM SVANidhi has reached 69 lakh vendors, a real start.
+
+12
+00:01:01,081 --> 00:01:07,503
+But loans are small and fixed, and nothing protects a vendor when the rain takes her income.
+
+13
+00:01:08,703 --> 00:01:14,168
+The gap is not willingness to repay. It is evidence. Banks cannot see her income.
+
+14
+00:01:14,168 --> 00:01:20,915
+Insurers cannot see her loss. And a notebook, or an app anyone can edit, proves nothing to a lender.
+
+15
+00:01:22,115 --> 00:01:28,254
+What if her voice was her paperwork? This is Kamai. She speaks her day in her own language.
+
+16
+00:01:28,254 --> 00:01:35,472
+Kamai turns it into a record that cannot be quietly changed, one a lender can trust and an insurer can use.
+
+17
+00:01:36,672 --> 00:01:43,680
+She signs up with her mobile number and a PIN, in Hindi or English. No app to learn. No forms to fill.
+
+18
+00:01:44,880 --> 00:01:48,203
+आज 1800 की बिक्री हुई और 1100 का माल लिया।
+“Today I sold ₹1,800 and bought ₹1,100 of stock.”
+
+19
+00:01:48,503 --> 00:01:51,236
+She says what she sold and what she bought.
+
+20
+00:01:51,236 --> 00:01:57,400
+Kamai writes it down and seals every line to the one before, so history cannot be quietly edited.
+
+21
+00:01:58,600 --> 00:02:02,684
+Over weeks, a score builds from her own record: her earnings,
+
+22
+00:02:02,684 --> 00:02:07,103
+how steady her weeks are, how much is verified, and any red flags.
+
+23
+00:02:07,103 --> 00:02:08,911
+Nothing is hidden from her.
+
+24
+00:02:10,111 --> 00:02:12,363
+The orange days are real rain-outs.
+
+25
+00:02:12,363 --> 00:02:17,895
+Kamai reads real rainfall for her city, and sees her sales fall on the days it poured.
+
+26
+00:02:19,095 --> 00:02:24,606
+The offer is sized on her weakest weeks, not her best. Thirty-three thousand rupees.
+
+27
+00:02:24,606 --> 00:02:29,460
+One tap sends her summary to the lender. Nothing is shared until she taps.
+
+28
+00:02:30,660 --> 00:02:36,498
+The lender sees only people who applied. Every record is re-verified each time it is opened.
+
+29
+00:02:37,698 --> 00:02:40,259
+Here, a vendor edited his past entries.
+
+30
+00:02:40,259 --> 00:02:46,957
+The chain no longer matches, and the server refuses to approve him, even if the lender clicks approve.
+
+31
+00:02:48,157 --> 00:02:51,713
+Another inflated his sales and re-signed the whole ledger.
+
+32
+00:02:51,713 --> 00:02:56,618
+The cost check still catches him: his stock cost is far too low for a tea stall.
+
+33
+00:02:57,818 --> 00:03:03,307
+And when the rains come? Her ledger plus the real rainfall record builds the claim.
+
+34
+00:03:03,307 --> 00:03:09,325
+No assessor, no bills. For Savitri, twelve rain-out days, about ninety-five hundred rupees.
+
+35
+00:03:10,525 --> 00:03:15,714
+The insurer sees every claim, re-verified. Tampered ledgers are held, not paid.
+
+36
+00:03:15,714 --> 00:03:23,202
+And we are honest about cost: this is the worst quarter, and the premium needed is far more than a vendor can pay.
+
+37
+00:03:23,202 --> 00:03:26,684
+A pilot would fund it through the loan, or a subsidy.
+
+38
+00:03:27,884 --> 00:03:33,245
+Here is what makes Kamai powerful. Her record cannot be quietly changed.
+
+39
+00:03:33,245 --> 00:03:38,755
+Five fraud checks run on every book. Loans are sized on her weakest weeks.
+
+40
+00:03:38,755 --> 00:03:41,585
+Claims follow her own verified losses.
+
+41
+00:03:41,585 --> 00:03:47,318
+And cover raises what she can borrow: from ₹17,000 to ₹33,000, in our sample.
+
+42
+00:03:48,518 --> 00:03:53,092
+Pieces of this exist. Ledger apps let vendors speak their entries.
+
+43
+00:03:53,092 --> 00:03:58,221
+Pilots pay street vendors on rain and heat. PM SVANidhi gives small loans.
+
+44
+00:03:58,221 --> 00:04:02,726
+We found no product that ties them together: a verifiable record,
+
+45
+00:04:02,726 --> 00:04:07,162
+claims that follow her own loss, and cover that raises her loan.
+
+46
+00:04:07,162 --> 00:04:09,102
+That is the gap Kamai fills.
+
+47
+00:04:10,302 --> 00:04:19,047
+Today, this is a working product: real accounts, a real database, real rainfall, and rules enforced and tested on the server.
+
+48
+00:04:19,047 --> 00:04:24,993
+The vendors in the demo are samples. We have not yet put it in front of real vendors.
+
+49
+00:04:26,193 --> 00:04:32,623
+Next: a pilot with one lender and a few hundred vendors, to see if the score predicts repayment.
+
+50
+00:04:32,623 --> 00:04:37,445
+Then bank data through an Account Aggregator, receipts read from photos,
+
+51
+00:04:37,445 --> 00:04:41,932
+a licensed insurer, and WhatsApp and phone calls in more languages.
+
+52
+00:04:41,932 --> 00:04:44,209
+So no one has to install anything.
+
+53
+00:04:45,409 --> 00:04:51,827
+Savitri has worked eleven years without a single line on paper. Kamai gives her the first line.
+
+54
+00:04:51,827 --> 00:04:54,259
+A passbook, for people banks ignore.
+
